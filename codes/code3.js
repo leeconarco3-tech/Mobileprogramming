@@ -1,47 +1,45 @@
-class Student {
-    constructor(name, score) {
+class Product {
+    constructor(name, price, stock) {
         this.name = name;
-        this.score = score;
+        this.price = price;
+        this.stock = stock;
     }
 }
 
-const students = [];
+const inventory = [];
 
-function addStudent(name, score) {
-    students.push(new Student(name, score));
+function addProduct(name, price, stock) {
+    inventory.push(new Product(name, price, stock));
 }
 
-function updateScore(name, newScore) {
-    for (let i = 0; i < students.length; i++) {
-        if (students[i].name === name) {
-            students[i].score = newScore;
-            console.log("\nUpdated " + name + "'s score to " + newScore);
+function buyProduct(name, quantity) {
+    for (let i = 0; i < inventory.length; i++) {
+        if (inventory[i].name === name) {
+            if (inventory[i].stock >= quantity) {
+                inventory[i].stock -= quantity;
+                console.log("\nBought " + quantity + " " + name + "(s)");
+            } else {
+                console.log("\nNot enough stock for " + name);
+            }
             return;
         }
     }
 }
 
-function displayClassSummary() {
-    let total = 0;
-
-    console.log("--- STUDENT GRADES ---");
-    for (let i = 0; i < students.length; i++) {
-        let s = students[i];
-        let result = s.score >= 75 ? "Passed" : "Failed";
-        total += s.score;
-        console.log(s.name + " - " + s.score + " [" + result + "]");
+function displayInventory() {
+    console.log("--- STORE INVENTORY ---");
+    for (let i = 0; i < inventory.length; i++) {
+        let p = inventory[i];
+        console.log(p.name + " - $" + p.price + " [Stock: " + p.stock + "]");
     }
-
-    let average = total / students.length;
-    console.log("Class Average: " + average);
 }
 
-addStudent("Jun Mark", 70);
-addStudent("Maria", 88);
-addStudent("John", 90);
+addProduct("Laptop", 800, 5);
+addProduct("Mouse", 20, 10);
 
-displayClassSummary();
+displayInventory();
 
-updateScore("Jun Mark", 82);
+buyProduct("Mouse", 3);
+buyProduct("Laptop", 6);
 
-displayClassSummary();
+displayInventory();
