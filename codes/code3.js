@@ -17,7 +17,8 @@ function buyProduct(name, quantity) {
         if (inventory[i].name === name) {
             if (inventory[i].stock >= quantity) {
                 inventory[i].stock -= quantity;
-                console.log("\nBought " + quantity + " " + name + "(s)");
+                let totalCost = inventory[i].price * quantity;
+                console.log("\nBought " + quantity + " " + name + "(s) for $" + totalCost);
             } else {
                 console.log("\nNot enough stock for " + name);
             }
@@ -26,12 +27,28 @@ function buyProduct(name, quantity) {
     }
 }
 
+function restockProduct(name, quantity) {
+    for (let i = 0; i < inventory.length; i++) {
+        if (inventory[i].name === name) {
+            inventory[i].stock += quantity;
+            console.log("\nRestocked " + quantity + " " + name + "(s)");
+            return;
+        }
+    }
+}
+
 function displayInventory() {
+    let totalValue = 0;
+
     console.log("--- STORE INVENTORY ---");
     for (let i = 0; i < inventory.length; i++) {
         let p = inventory[i];
+        let itemTotal = p.price * p.stock;
+        totalValue += itemTotal;
         console.log(p.name + " - $" + p.price + " [Stock: " + p.stock + "]");
     }
+
+    console.log("Total Inventory Value: $" + totalValue);
 }
 
 addProduct("Laptop", 800, 5);
@@ -40,6 +57,7 @@ addProduct("Mouse", 20, 10);
 displayInventory();
 
 buyProduct("Mouse", 3);
-buyProduct("Laptop", 6);
+
+restockProduct("Laptop", 2);
 
 displayInventory();
