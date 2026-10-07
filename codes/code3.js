@@ -1,63 +1,41 @@
-class Product {
-    constructor(name, price, stock) {
-        this.name = name;
-        this.price = price;
-        this.stock = stock;
+class Task {
+    constructor(title) {
+        this.title = title;
+        this.isDone = false;
     }
 }
 
-const inventory = [];
+const todoList = [];
 
-function addProduct(name, price, stock) {
-    inventory.push(new Product(name, price, stock));
+function addTask(title) {
+    todoList.push(new Task(title));
 }
 
-function buyProduct(name, quantity) {
-    for (let i = 0; i < inventory.length; i++) {
-        if (inventory[i].name === name) {
-            if (inventory[i].stock >= quantity) {
-                inventory[i].stock -= quantity;
-                let totalCost = inventory[i].price * quantity;
-                console.log("\nBought " + quantity + " " + name + "(s) for $" + totalCost);
-            } else {
-                console.log("\nNot enough stock for " + name);
-            }
+function completeTask(title) {
+    for (let i = 0; i < todoList.length; i++) {
+        if (todoList[i].title === title) {
+            todoList[i].isDone = true;
+            console.log("\nCompleted: " + title);
             return;
         }
     }
 }
 
-function restockProduct(name, quantity) {
-    for (let i = 0; i < inventory.length; i++) {
-        if (inventory[i].name === name) {
-            inventory[i].stock += quantity;
-            console.log("\nRestocked " + quantity + " " + name + "(s)");
-            return;
-        }
+function displayTasks() {
+    console.log("--- TODO LIST ---");
+    for (let i = 0; i < todoList.length; i++) {
+        let t = todoList[i];
+        let status = t.isDone ? "Done" : "Pending";
+        console.log((i + 1) + ". " + t.title + " [" + status + "]");
     }
 }
 
-function displayInventory() {
-    let totalValue = 0;
+addTask("Study Node.js");
+addTask("Clean room");
+addTask("Do homework");
 
-    console.log("--- STORE INVENTORY ---");
-    for (let i = 0; i < inventory.length; i++) {
-        let p = inventory[i];
-        let itemTotal = p.price * p.stock;
-        totalValue += itemTotal;
-        console.log(p.name + " - $" + p.price + " [Stock: " + p.stock + "]");
-    }
+displayTasks();
 
-    console.log("Total Inventory Value: $" + totalValue);
-}
+completeTask("Study Node.js");
 
-addProduct("Laptop", 800, 5);
-addProduct("Mouse", 20, 10);
-
-displayInventory();
-
-buyProduct("Mouse", 3);
-
-restockProduct("Laptop", 2);
-
-displayInventory();
+displayTasks();
